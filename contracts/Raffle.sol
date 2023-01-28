@@ -42,7 +42,7 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
   uint256 private immutable i_interval;
 
   /* Events */
-  event RaflEnter(address indexed player);
+  event RaffleEnter(address indexed player);
   event RequestRaffleWinner(uint256 indexed requestId);
   event WinnerPicked(address indexed winner);
 
@@ -75,19 +75,20 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
     }
     s_players.push(payable(msg.sender));
     // events
-    emit RaflEnter(msg.sender);
+    emit RaffleEnter(msg.sender);
   }
 
     /**
      * @dev This is the function that 
      */
 
-  function checkUpkeep(bytes memory /* checkData*/) public override returns (bool upkeepNeeded, bytes memory) {
+  function checkUpkeep(bytes memory /* checkData*/) public view override returns (bool upkeepNeeded, bytes memory) {
     bool isOpen = (RaffleState.OPEN == s_raffleState);
     bool timePassed = ((block.timestamp - s_lastTimeStamp) >  i_interval);
     bool hasPlayers = (s_players.length > 0);
     bool hasBalance = address(this).balance> 0;
     upkeepNeeded = (isOpen && timePassed && hasPlayers && hasBalance);
+    return (upkeepNeeded, "0x0"); // can we comment this out?
   }
 
 
@@ -156,5 +157,9 @@ contract Raffle is VRFConsumerBaseV2, KeeperCompatibleInterface {
 
   function getRequestConfirmation() public pure returns (uint256) {
     return REQUEST_CONFIRMATIONS;
+  }
+
+  function getInterval() public view returns (uint256) {
+    return i_interval;
   }
 }

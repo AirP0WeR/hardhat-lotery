@@ -27,10 +27,26 @@ module.exports = {
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
     }
   },
-  solidity: "0.8.17",
+  gasReporter: {
+    enabled: false,
+    currency: "USD",
+    outputFile: "gas-report.txt",
+    noColors: true,
+    // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+  },
+  solidity: {
+    compilers: [
+        {
+            version: "0.8.17",
+        },
+        {
+            version: "0.8.0",
+        },
+    ],
+  },
   namedAccounts: {
     deployer: {
-      default: 0, // here this will by default take the first account as deployer
+      default: 0, //here this will by default take the first account as deployer
     },
     player: {
       default: 1,
