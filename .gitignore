@@ -6,3 +6,4 @@ artifacts/
 deployments/
 
 coverage.json
+coverage/
