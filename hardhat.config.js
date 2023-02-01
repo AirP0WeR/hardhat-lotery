@@ -27,12 +27,17 @@ module.exports = {
       accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
     }
   },
+  etherscan: {
+    apiKey: {
+      goerli: ETHERSCAN_API_KEY,
+    }
+  },
   gasReporter: {
     enabled: false,
     currency: "USD",
     outputFile: "gas-report.txt",
     noColors: true,
-    // coinmarketcap: process.env.COINMARKETCAP_API_KEY,
+    coinmarketcap: COINMARKETCAP_API_KEY,
   },
   solidity: {
     compilers: [

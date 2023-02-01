@@ -18,9 +18,12 @@ developmentChains.includes(network.name)
 
       describe("fulfillRandomWords", () => {
         it("worcks with Chainlink Keepers and Chainlink VRF, we get a ramdom winner", async () => {
+                            // enter the raffle
+          console.log("Setting up test...")
           const startingTimeStamp = await raffle.getLatestTimeStamp();
           const accounts = await ethers.getSigners();
 
+          console.log("Setting up Listener...")
           await new Promise(async (resolve, reject) => {
             raffle.once("WinnerPicked", async () => {
               console.log("WinnerPicked enent fired!");
@@ -38,7 +41,7 @@ developmentChains.includes(network.name)
                 assert.equal(
                   winnerEndingBalance.toString(),
                   winnerStartingBalance.add(raffleEntranceFee).toString())
-                assert(endingTimeStamp >startingTimeStamp);
+                assert(endingTimeStamp > startingTimeStamp);
                 resolve();
 
               } catch(error) {
@@ -46,8 +49,10 @@ developmentChains.includes(network.name)
                 reject(error);
               }
             });
-
+                      // Then entering the raffle
+            console.log("Entering Raffle...")
             await raffle.enterRaffle({ value: raffleEntranceFee });
+            console.log("Ok, time to wait...")
             const winnerStartingBalance = await accounts[0].getBalance();
 
           });
